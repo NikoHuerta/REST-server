@@ -1,6 +1,8 @@
 const express = require('express'); //minimalist web framework for Node.js applications
 const cors = require('cors'); //CORS-> Cross-origin resource sharing (CORS) 
 
+const { dbConnection } = require('../db/config');
+
 
 class Server {
 
@@ -8,12 +10,19 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
         this.usuariosPath = '/api/usuarios';
+        
+        //Conectar a DB
+        this.connectarDB();
 
         //Middlewares
         this.middlewares();
 
         //Rutas de mi aplicación
         this.routes();
+    }
+
+    async connectarDB(){
+        await dbConnection();
     }
 
     middlewares(){

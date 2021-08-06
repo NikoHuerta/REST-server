@@ -1,6 +1,10 @@
 const express = require('express'); //minimalist web framework for Node.js applications
 const cors = require('cors'); //CORS-> Cross-origin resource sharing (CORS) 
 
+const { validarJSON } = require('../middlewares/validar-json');
+
+
+
 const { dbConnection } = require('../db/config');
 
 
@@ -32,6 +36,9 @@ class Server {
 
         //Lectura y parseo del body
         this.app.use(express.json());
+
+        //Validacion de JSON req
+        this.app.use(validarJSON);
 
         //Directorio Público
         this.app.use(express.static('public'));

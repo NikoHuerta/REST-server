@@ -1,6 +1,8 @@
-const Role = require('../models/role');
-const Usuario = require('../models/usuario');
+const { Categoria, Role, Usuario } = require('../models');
 
+
+
+//validadores de usuario
 const esRoleValido = async (rol = '') => {
 
     //Verificar que le role exista
@@ -29,13 +31,47 @@ const existeUsuarioPorId = async (_id) => {
         }
     } else {
         throw new Error(`El ID ${ _id } no es válido`);
+    }   
+}
+
+//validadores de categorias
+
+const existeCategoriaId = async (_id) => {
+    //verificar si cumple la regla de id de mongo
+    if (_id.match(/^[0-9a-fA-F]{24}$/)) {
+        //Verificar si la categoria existe
+        const existeCat = await Categoria.findById({ _id });
+
+        if(!existeCat){
+            throw new Error(`El ID de categoria ${ _id } no existe`);
+        }
+
+        //verificar si la categoria esta borrada
+        if(!existeCat.estado)
+        {
+            throw new Error(`La categoria se encuentra deshabilitada`);    
+        }
+
+    } else {
+        throw new Error(`El ID de categoria ${ _id } no es válido`);
     }
 
-    
 }
+
+const existeCategoriaNombre = async (nombre = '') => {
+
+    const existeCatNombre = await Categoria.findOne({nombre});
+    console.log(existeCatNombre);
+    if(existeCatNombre){
+        throw new Error(`El nombre ${nombre} ya se encuentra registrado a una categoria, no se puede actualizar`);
+    }
+}
+
 
 module.exports = {
     esRoleValido,
     emailExiste,
-    existeUsuarioPorId
+    existeUsuarioPorId,
+    existeCategoriaId,
+    existeCategoriaNombre
 }

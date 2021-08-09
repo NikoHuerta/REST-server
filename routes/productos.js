@@ -1,7 +1,7 @@
 const { Router } = require ('express');
 const { check } = require('express-validator');
 
-const { validarCampos, validarJWT, tieneRole, esPropioUpdate } = require('../middlewares');
+const { validarCampos, validarJWT, tieneRole } = require('../middlewares');
 const { crearProducto, obtenerProducto, obtenerProductos, actualizarProducto, borrarProducto } = require('../controllers/productos');
 
 const { existeCategoriaId, existeProductoId, existeProductoNombre  } = require('../helpers/bd-validators');
@@ -42,15 +42,25 @@ router.get('/:id', [
 router.put('/:id', [
     validarJWT,
     check('id').custom( existeProductoId ),
-    check('nombre','El nombre es obligatorio').not().isEmpty(),
-    esPropioUpdate,
-    //check('nombre').custom( existeProductoNombre ),
-    check('categoria','La categoria es obligatoria').not().isEmpty(),
-    check('categoria').custom( existeCategoriaId ),
+    check('nombre').custom(existeProductoNombre).optional({nullable: true}),
+    check('categoria').custom( existeCategoriaId ).optional({nullable: true}),
     check('disponible').isBoolean().optional({nullable: true}),
     check('precio').isNumeric().optional({nullable: true}),
     validarCampos
 ], actualizarProducto);
+
+
+// router.put('/:id', [  //obligatorio categoria y nombre
+//     validarJWT,
+//     check('id').custom( existeProductoId ),
+//     check('nombre','El nombre es obligatorio').not().isEmpty(),
+//     esPropioUpdate,
+//     check('categoria','La categoria es obligatoria').not().isEmpty(),
+//     check('categoria').custom( existeCategoriaId ),
+//     check('disponible').isBoolean().optional({nullable: true}),
+//     check('precio').isNumeric().optional({nullable: true}),
+//     validarCampos
+// ], actualizarProducto);
 
 
 //borrar un producto por id -- privado -- admin role(delete)

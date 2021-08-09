@@ -13,8 +13,6 @@ const esPropioUpdate = async (req, res = response, next) =>{
                                                     ]);
 
     //validar si el id a actualizar y el nombre son iguales, si son iguales dejar actualizar
-    console.log("productoById: ",productoById);
-    console.log("productoByName: ",productoByName);
     
     try{
         //verificar si son el mismo registro por nombre

@@ -4,12 +4,9 @@ const { Producto } = require('../models');
 
 const crearProducto = async (req, res) => {
     
-    //attr obligatorios
-    const nombre = req.body.nombre.toUpperCase();
-    //attr opcionales
-    const { categoria, precio, descripcion, disponible } = req.body; //3 ultimos opcionales
+    const {estado, usuario, ...body} = req.body; //en body: nombre, categoria, precio, descripcion, disponible
 
-    const existeProductoDB = await Producto.findOne({nombre});
+    const existeProductoDB = await Producto.findOne({ nombre: body.nombre.toUpperCase() });
     if(existeProductoDB){
         return res.status(400).json({
             msg: `El producto ${existeProductoDB.nombre}, ya existe, no se puede añadir`
@@ -17,15 +14,11 @@ const crearProducto = async (req, res) => {
     }
 
     const data = {
-        nombre,
-        categoria,
-        "usuario": req.usuario._id
+        ...body,
+        nombre: body.nombre.toUpperCase(),
+        usuario: req.usuario._id
     };
-
-    if (precio) data.precio = precio;
-    if (descripcion) data.descripcion = descripcion;
-    if (disponible) data.disponible = disponible; 
-    
+   
     const producto = new Producto(data);
     //Grabar data
     await producto.save();
@@ -73,21 +66,16 @@ const actualizarProducto = async (req, res) => {
    
     //atrr obligatorios
     const { id } = req.params;
-    const {nombre, categoria, precio, descripcion, disponible} = req.body; //3 ultimos atrr opcionales
+    const {estado, usuario, ...body} = req.body; //opcionales en ...body --> nombre, categoria, precio, descripcion, disponible
 
-
-    //otra opcion es desestructurar req.body, para dejar afuera los que no necesitamos actualizar por seguridad --> estado, usuario , en lo anterior solo se saca del body lo que es necesario actualizar -> nombre
+    if(!(body.nombre || body.categoria || body.precio || body.descripcion || body.disponible)) res.status(401).json({ msg: 'No hay datos que actualizar' });
 
     const data = {
-        nombre : nombre.toUpperCase(),
-        categoria,
+        ...body,
         usuario: req.usuario._id
     }
-
     
-    if (precio) data.precio = precio;
-    if (descripcion) data.descripcion = descripcion;
-    if (disponible) data.disponible = disponible; 
+    if (body.nombre) data.nombre = body.nombre.toUpperCase();
 
     const producto = await Producto.findByIdAndUpdate(id, data, { new: true });
 

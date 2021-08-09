@@ -15,7 +15,7 @@ const router = Router();
 
 //obtener todas las categorias -- publico (get) 
 router.get('/', [
-    check('limit', 'El limit debe ser numerico').isNumeric().optional({nullable: true}),
+    check('limit', 'Parametro limit debe ser numerico').isNumeric().optional({nullable: true}),
     check('desde', 'Parametro desde debe ser numerico').isNumeric().optional({nullable: true}),
     validarCampos
 ], obtenerCategorias);

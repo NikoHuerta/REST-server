@@ -106,6 +106,7 @@ const existeProductoNombre = async (nombre = '') => {
 }
 
 
+
 module.exports = {
     esRoleValido,
     emailExiste,

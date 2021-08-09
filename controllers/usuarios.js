@@ -30,7 +30,7 @@ const usuariosGet = async (req = request, res = response) => {
 const usuariosPut = async (req, res = response) => {
 
     const { id } = req.params;
-    const { _id, password, google, ...resto  } = req.body;
+    const { _id, password, google, ...resto  } = req.body; //Rest Parameters, gathers the rest of the list of arguments into an array
 
     //TODO: validar contra DB
     if(password){

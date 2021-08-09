@@ -4,15 +4,13 @@ const validarCampos = require('../middlewares/validar-campos');
 const validarJWT = require('../middlewares/validar-jwt');
 const validarJSON = require('../middlewares/validar-json');
 const validaRoles = require('../middlewares/validar-roles');
-const validaActualizarProductos = require('../middlewares/validar-actualizarProducto');
 
 
 module.exports = {
     ... validarCampos,
     ... validarJWT,
     ... validarJSON,
-    ... validaRoles,
-    ... validaActualizarProductos
+    ... validaRoles
 }
 
 

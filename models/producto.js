@@ -33,7 +33,10 @@ const ProductoSchema = Schema({
     disponible: { //--> stock
         type: Boolean,
         default: true
-    }
+    },
+    img: {
+        type: String
+    },
 });
 
 

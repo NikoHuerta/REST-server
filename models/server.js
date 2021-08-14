@@ -1,12 +1,16 @@
 const express = require('express'); //minimalist web framework for Node.js applications
 const cors = require('cors'); //CORS-> Cross-origin resource sharing (CORS) 
 const fileUpload = require('express-fileupload');
+const { createServer } = require('http');
+
+
 
 const { validarJSON } = require('../middlewares/validar-json');
 
 
 
 const { dbConnection } = require('../db/config');
+const { socketController } = require('../sockets/controller');
 
 
 class Server {
@@ -14,6 +18,10 @@ class Server {
     constructor () {
         this.app = express();
         this.port = process.env.PORT;
+        // this.server = require('http').createServer(this.app);
+        this.server = createServer(this.app);
+        this.io = require('socket.io')(this.server);
+
 
         this.paths = {
             auth:       '/api/auth',
@@ -36,6 +44,9 @@ class Server {
 
         //Rutas de mi aplicación
         this.routes();
+
+        //Socket Events
+        this.sockets();
     }
 
     async connectarDB(){
@@ -77,11 +88,19 @@ class Server {
 
     }
 
+    sockets(){
+        this.io.on('connection', (socket) => socketController(socket, this.io));
+    }
+
     listen(){
 
-        this.app.listen(this.port, () => {
-            console.log("Server running in port ", this.port);
+        this.server.listen(this.port, () => {
+            console.log("Server REST running in port ", this.port);
         });
+
+        // this.app.listen(this.port, () => {
+        //     console.log("Server REST running in port ", this.port);
+        // });
 
     }
 }

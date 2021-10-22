@@ -128,7 +128,7 @@ const dibujarMensajePrivado = ( {de, mensaje} )  => {
 };
 
 btnSalir.addEventListener('click', () => {
-    localStorage.removeItem('token');
+    localStorage.clear();
     window.location = 'index.html';
 });
 

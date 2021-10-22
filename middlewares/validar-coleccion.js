@@ -7,10 +7,11 @@ require('dotenv').config();
 
 
 const conn = mongoose.createConnection(process.env.MONGODB_CNN, { 
-                                                                    useNewUrlParser: true, 
+                                                                    /* useNewUrlParser: true, 
                                                                     useUnifiedTopology: true,
                                                                     useCreateIndex: true,
-                                                                    useFindAndModify: false
+                                                                    useFindAndModify: false */
+                                                                    //desde mongoose 6.0, esto de arriba no es necesario, por default
                                                                 });
 
 

@@ -58,6 +58,14 @@ miFormulario.addEventListener('submit', ev => {
 
 });
 
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+
+/* Depreciated by Google Identity Login
 function onSignIn(googleUser) {
 
     var id_token = googleUser.getAuthResponse().id_token;
@@ -78,11 +86,6 @@ function onSignIn(googleUser) {
 
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
@@ -92,3 +95,4 @@ function signOut() {
     
     });
 }
+*/
